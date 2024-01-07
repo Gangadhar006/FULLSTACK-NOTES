@@ -1,0 +1,282 @@
+CustomerController Class
+========================================================
+"Now, let's talk about the CustomerController. 
+ This class acts as the gateway for handling HTTP requests related to customers.
+ It communicates with our service layer, which we'll explore in the next slide."
+
+
+CustomerService Interface and Implementation
+========================================================
+"Here we have the ICustomerService interface and its implementation, CustomerServiceImpl.
+ The service layer is where the business logic happens. 
+ It's responsible for creating, updating, deleting, and retrieving customer information.
+ The CustomerServiceImpl utilizes various repositories for data access and a ModelMapper for smooth data mapping."
+
+
+Interfaces - ICustomerRepository and ICustomerService
+========================================================
+"Interfaces like ICustomerRepository and ICustomerService play a crucial role in achieving flexibility and modularity.
+ They define contracts that our classes adhere to, enabling us to swap implementations seamlessly."
+
+
+Customer Class
+========================================================
+"Our central figure here is the Customer class.
+ This class represents a customer in our system and encapsulates various details such as their name, date of birth, email, and more.
+ One interesting aspect is the composition relationship with Account and Transaction, indicating that a customer has a list of accounts and transactions."
+
+
+CustomerRequest and CustomerResponse
+========================================================
+"When a client interacts with our system, data is transferred using CustomerRequest and CustomerResponse objects.
+ These act as DTOs (Data Transfer Objects), making it easy to send and receive data without exposing unnecessary details."
+
+
+GenderType Enumeration
+========================================================
+"Let's take a moment to look at the GenderType enumeration. 
+ It provides a clean and structured way of representing gender types - MALE, FEMALE, and OTHERS. 
+ This helps us maintain consistency and clarity in our data model."
+
+
+Exception Handling with CustomerNotFoundException
+========================================================
+"Sometimes, things don't go as planned. If a customer is not found, we throw a CustomerNotFoundException.
+ This helps us handle exceptional cases gracefully and communicate the issue back to the user or the calling component."
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Account Class
+========================================================
+"Our core entity is the `Account` class.
+ It represents a bank account and stores essential information like the account number, amount, customer details, and more.
+ The methods within it allow us to access and modify account details."
+
+
+Exception Handling
+========================================================
+"Next, we have two exceptional classes, `AccountAlreadyExistsException` and `AccountConflictException`.
+ These handle scenarios where an account already exists or conflicts arise during operations."
+"We also have `AccountMisMatchException` and `AccountNotFoundException` for handling cases where there are mismatches or if an account is not found during operations."
+
+
+AccountController
+========================================================
+"Now, let's talk about the `AccountController`.
+ It acts as the bridge between our API, the service layer, and the client.
+ With methods like `createAccount`, `updateAccount`, and others, it manages the flow of information and requests."
+
+
+AccountNumberGenerator
+========================================================
+"To ensure uniqueness, we have the `AccountNumberGenerator`.
+ It's responsible for generating unique account numbers for new accounts, preventing any clashes."
+
+
+Request and Response
+========================================================
+"Now, let's look at `AccountRequest` and `AccountResponse`.
+ `AccountRequest` is the format for creating or updating an account, while `AccountResponse` represents the response format for account-related operations."
+
+
+AccountServiceImpl
+========================================================
+"The brains behind our operations reside in `AccountServiceImpl`.
+ It implements the business logic for account-related actions, using tools like `ModelMapper`.
+ This class interacts with repositories and a number generator for seamless functionality."
+
+
+CurrencyType Enumeration
+========================================================
+"Managing currencies is crucial. Our `CurrencyType` enumeration simplifies this, representing different currency types like AED, SGD, and more."
+
+
+Repository and Service Interfaces
+========================================================
+"For data access, we have two interfaces: `IAccountRepository` and `IAccountService`.
+ `IAccountRepository` defines methods for checking account existence and fetching accounts,
+ while `IAccountService` declares methods for account operations."
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**1. Exception Classes:**
+========================================================
+"Let's start with the foundation – our exception classes. These are like safety nets that catch issues when they arise:
+- `AccountMismatchException`: Signals a mismatch in accounts.
+- `AccountNotFoundException`: For when an account is not found.
+- `CustomerNotFoundException`: Handles scenarios where a customer isn't found.
+- `InsufficientFundsException`: Alerts us to insufficient funds during transactions."
+
+---
+
+**2. ExchangeRates Class:**
+========================================================
+"Now, let's talk about managing currency exchange rates:
+- `ExchangeRates`: Holds the exchange rates in a map structure.
+- It has methods to `getRates()` and `setRates()` for easy manipulation."
+
+---
+
+**3. ExchangeRatesController and ExchangeRatesServiceImpl:**
+========================================================
+"Moving on to the controllers and services that deal with exchange rates:
+- `ExchangeRatesController`: Manages exchange rates through an `IExchangeRatesService`. It can fetch the latest rates.
+- `ExchangeRatesServiceImpl`: Implements the `IExchangeRatesService` interface, fetching rates from an external API."
+
+---
+
+**4. Interfaces:**
+========================================================
+"We're big fans of flexibility, and that's where our interfaces come in:
+- `IExchangeRatesService`: Declares methods for handling exchange rates.
+- `IOrderService`: For managing orders, fetching transactions, and creating new ones.
+- `ITransactionRepository`: Helps us find transactions based on customer ID."
+
+---
+
+**5. Order Classes:**
+========================================================
+"Now, let's dive into classes related to orders and transactions:
+- `OrderController`: Manages orders through an `IOrderService`, with methods to create and fetch transactions.
+- `OrderRequest`: Represents a request to create an order, specifying source and destination accounts and amount.
+- `OrderResponse`: Represents the response after creating an order, detailing key information like amounts, rates, and time."
+
+---
+
+**6. OrderServiceImpl:**
+========================================================
+"The heart of our transaction management system:
+- `OrderServiceImpl`: Implements the `IOrderService` interface.
+- It orchestrates transactions, validations, and interactions with other components.
+- Utilizes a `ModelMapper` for seamless entity mapping.
+- Throws exceptions for account mismatches and insufficient funds."
+
+---
+
+**7. Transaction Class:**
+========================================================
+"Now, let's meet the `Transaction` class:
+- Represents a transaction with various attributes such as ID, source account, destination account, amount, rate, and more.
+- Performs value calculations and overrides standard methods like `equals()` and `hashCode()`."
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1. **AuthenticationController:**
+========================================================
+   - Responsible for handling authentication-related HTTP requests.
+   - Uses an interface `IAuthenticationService` to delegate authentication logic.
+   - Exposes a `signin` method that takes a `LoginRequest` and returns a `ResponseEntity` containing a `JwtAuthenticationResponse`.
+
+2. **AuthenticationServiceImpl:**
+========================================================
+   - Implements the authentication logic.
+   - Utilizes `ICredentialsRepository` for accessing credentials, `IJwtService` for JWT-related operations, and `AuthenticationManager` for Spring Security.
+   - Provides a `signin` method that returns a `JwtAuthenticationResponse`.
+
+3. **Credentials:**
+========================================================
+   - Represents user credentials with properties like email, password, customer information, ID, and role.
+   - Provides various getter and setter methods for accessing and modifying these properties.
+   - Implements security-related methods like checking if the account is enabled or credentials are expired.
+
+4. **Interfaces:**
+========================================================
+   - **IAuthenticationService:** Declares a method for user authentication.
+   - **ICredentialsRepository:** Defines methods for retrieving user credentials by ID or email.
+   - **IJwtService:** Specifies methods for JWT-related operations.
+   - **IRolesRepository:** Describes a method for retrieving roles by type.
+
+5. **JwtAuthenticationResponse:**
+========================================================
+   - Represents the response containing a JWT token, customer ID, and user role.
+   - Provides methods for accessing and modifying these properties.
+
+6. **JwtServiceImpl:**
+========================================================
+   - Implements JWT-related operations.
+   - Uses a secret key for signing tokens.
+   - Provides methods for token generation, validation, and extraction of information.
+
+7. **LoginRequest:**
+========================================================
+   - Represents the user's login request with email and password properties.
+   - Provides getter and setter methods for these properties.
+
+8. **RoleType:**
+========================================================
+   - An enumeration representing user roles (USER, ADMIN).
+
+9. **Roles:**
+========================================================
+   - Represents user roles with properties like ID, role type, description, and a list of associated credentials.
+   - Provides methods for accessing and modifying these properties.
+
+10. **UserServiceImpl:**
+========================================================
+    - Implements user service functionality.
+    - Uses `ICredentialsRepository` to provide a `UserDetailsService`.
+
+Now, the arrows in the diagram indicate relationships:
+- `AuthenticationController` has a dependency on `IAuthenticationService`.
+- `AuthenticationServiceImpl` implements `IAuthenticationService` and has dependencies on `ICredentialsRepository` and `IJwtService`.
+- `Credentials` is associated with `Roles` (composition relationship).
+- `JwtAuthenticationResponse` is associated with `RoleType`.
+- `JwtServiceImpl` implements `IJwtService`.
+- `Roles` is associated with `Credentials` (composition relationship).
+- `UserServiceImpl` implements `IUserService` and has a dependency on `ICredentialsRepository`.
+
+
