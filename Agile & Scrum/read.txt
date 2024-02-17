@@ -1,0 +1,7 @@
+Topics to Cover:
+----------------
+1. Intro to Agile
+2. Intro to Scrum Framework
+3. Scrum Values & Pillars
+4. Scrum Ceremonies
+5. Scrum Artifacts
